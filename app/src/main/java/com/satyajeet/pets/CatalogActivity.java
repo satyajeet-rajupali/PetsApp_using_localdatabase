@@ -1,6 +1,9 @@
 package com.satyajeet.pets;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.ContentValues;
 import android.content.Intent;
@@ -15,14 +18,23 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.satyajeet.pets.Data.PetAdapter;
+import com.satyajeet.pets.Data.PetData;
 import com.satyajeet.pets.Data.PetsContract.PetEntry;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.satyajeet.pets.Data.PetDbHelper;
 
+import java.util.ArrayList;
+
 public class CatalogActivity extends AppCompatActivity {
 
     //private PetDbHelper mDbHelper;
+
+    private RecyclerView mPetsRecyclerView;
+    private PetAdapter mPetAdapter;
+    private ArrayList<PetData> mPetArrayData;
+    private PetData mPetData;
 
     private static final String LOG_TAG = CatalogActivity.class.getSimpleName();
 
@@ -36,6 +48,10 @@ public class CatalogActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_catalog);
+
+        mPetsRecyclerView = findViewById(R.id.rec_view);
+        
+        mPetArrayData = new ArrayList<>();
 
         // Setup FAB to open EditorActivity
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -82,9 +98,9 @@ public class CatalogActivity extends AppCompatActivity {
         try {
             // Display the number of rows in the Cursor (which reflects the number of rows in the
             // pets table in the database).
-            TextView displayView = (TextView) findViewById(R.id.text_view_pet);
-            displayView.setText("The pets table contains " + cursor.getCount() + " pets.\n\n");
-            displayView.append(PetEntry._ID + " - " + PetEntry.COLUMN_PET_NAME + " - " + PetEntry.COLUMN_PET_BREED + " - " + PetEntry.COLUMN_PET_GENDER + " - " + PetEntry.COLUMN_PET_WEIGHT + "\n");
+//            TextView displayView = (TextView) findViewById(R.id.text_view_pet);
+//            displayView.setText("The pets table contains " + cursor.getCount() + " pets.\n\n");
+//            displayView.append(PetEntry._ID + " - " + PetEntry.COLUMN_PET_NAME + " - " + PetEntry.COLUMN_PET_BREED + " - " + PetEntry.COLUMN_PET_GENDER + " - " + PetEntry.COLUMN_PET_WEIGHT + "\n");
 
             int idColumnIndex = cursor.getColumnIndex(PetEntry._ID);
             int idNameIndex = cursor.getColumnIndex(PetEntry.COLUMN_PET_NAME);
@@ -99,9 +115,17 @@ public class CatalogActivity extends AppCompatActivity {
                 String breed = cursor.getString(idBreedIndex);
                 int gender = cursor.getInt(idGenderIndex);
                 int weight = cursor.getInt(idWeightIndex);
+                mPetData = new PetData(name, breed);
+                mPetArrayData.add(mPetData);
 
-                displayView.append("\n" + id + " - " + name + " - " + breed + " - " + gender + " - " + weight);
+                //displayView.append("\n" + id + " - " + name + " - " + breed + " - " + gender + " - " + weight);
             }
+
+            mPetAdapter = new PetAdapter(this, mPetArrayData);
+            mPetsRecyclerView.setAdapter(mPetAdapter);
+
+            LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+            mPetsRecyclerView.setLayoutManager(layoutManager);
 
 
         } finally {
