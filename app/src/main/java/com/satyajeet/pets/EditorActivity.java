@@ -176,6 +176,8 @@ public class EditorActivity extends AppCompatActivity implements
                 TextUtils.isEmpty(weightString) && mGender == PetEntry.GENDER_UNKNOWN) {
             // Since no fields were modified, we can return early without creating a new pet.
             // No need to create ContentValues and no need to do any ContentProvider operations.
+            Toast.makeText(this, getString(R.string.nothing_saved), Toast.LENGTH_SHORT).show();
+
             return;
         }
 

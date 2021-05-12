@@ -93,4 +93,5 @@
 
     <!-- Label for the pet's breed if the breed is unknown [CHAR LIMIT=20] -->
     <string name="unknown_breed">Unknown breed</string>
+    <string name="nothing_saved">Nothing Saved…</string>
 </resources>

@@ -9,7 +9,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Pets">
-        <activity android:name=".EditorActivity"></activity>
+        <activity android:name=".EditorActivity"
+            android:parentActivityName=".CatalogActivity">
+
+            <meta-data
+
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.satyajeet.pets.CatalogActivity"
+                />
+
+        </activity>
 
         <activity android:name=".CatalogActivity">
             <intent-filter>
