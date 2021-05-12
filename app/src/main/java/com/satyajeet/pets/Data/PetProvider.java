@@ -164,11 +164,11 @@ public class PetProvider extends ContentProvider {
             throw new IllegalArgumentException("Weight not provided..");
         }
 
-        int gender = values.getAsInteger(PetEntry.COLUMN_PET_GENDER);
-        if (gender!= 0 || gender != 1 || gender != 2) {
-            Toast.makeText(getContext(), "Gender not provided..",
-                    Toast.LENGTH_SHORT).show();
-            throw new IllegalArgumentException("Gender not provided..");
+        if (values.containsKey(PetEntry.COLUMN_PET_GENDER)) {
+            Integer gender = values.getAsInteger(PetEntry.COLUMN_PET_GENDER);
+            if (gender == null || !PetEntry.isValidGender(gender)) {
+                throw new IllegalArgumentException("Pet requires valid gender");
+            }
         }
 
 
@@ -233,9 +233,9 @@ public class PetProvider extends ContentProvider {
         // check that the gender value is valid.
         if (values.containsKey(PetEntry.COLUMN_PET_GENDER)) {
             Integer gender = values.getAsInteger(PetEntry.COLUMN_PET_GENDER);
-//            if (gender == null || !PetEntry.isValidGender(gender)) {
-//                throw new IllegalArgumentException("Pet requires valid gender");
-//            }
+            if (gender == null || !PetEntry.isValidGender(gender)) {
+                throw new IllegalArgumentException("Pet requires valid gender");
+            }
         }
 
         // If the {@link PetEntry#COLUMN_PET_WEIGHT} key is present,
